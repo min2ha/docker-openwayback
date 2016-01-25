@@ -27,11 +27,11 @@ RUN cd /opt/tomcat/webapps && rm -rf *
 RUN \
   git clone https://github.com/ukwa/openwayback.git && \
   cd openwayback && \
-  git checkout rri-resolve-revisits && \
+  git checkout master && \
   mvn install -DskipTests
 
 RUN \
-  unzip /openwayback/wayback-webapp/target/openwayback-2.3.0-SNAPSHOT.war -d /opt/tomcat/webapps/ROOT
+  unzip /openwayback/wayback-webapp/target/openwayback-*.war -d /opt/tomcat/webapps/ROOT
 
 COPY server.xml /opt/apache-tomcat-7.0.67/conf/server.xml
 
