@@ -31,7 +31,7 @@ RUN \
   mvn install -DskipTests
 
 RUN \
-  unzip /openwayback/wayback-webapp/target/openwayback-*.war -d /opt/tomcat/webapps/ROOT
+  unzip /openwayback/wayback-webapp/target/openwayback-2.*.war -d /opt/tomcat/webapps/ROOT
 
 COPY server.xml /opt/apache-tomcat-7.0.67/conf/server.xml
 
