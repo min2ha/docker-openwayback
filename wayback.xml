@@ -179,7 +179,7 @@
   </bean>
 
   <bean name="standardaccesspoint" class="org.archive.wayback.webapp.AccessPoint">
-    <property name="accessPointPath" value="${wayback.url.prefix}/wayback/"/>
+    <property name="accessPointPath" value="${wayback.url.port}:wayback"/>
     <property name="internalPort" value="${wayback.url.port}"/>
     <property name="serveStatic" value="true" />
     <property name="bounceToReplayPrefix" value="false" />
