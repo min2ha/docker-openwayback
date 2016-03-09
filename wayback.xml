@@ -342,9 +342,7 @@
     <property name="queryPrefix" value="http://${wayback.url.host}:8090/" />
     <property name="replay" ref="proxyreplay" />
     <property name="uriConverter">
-      <bean class="org.archive.wayback.proxy.RedirectResultURIConverter">
-        <property name="redirectURI" value="http://${wayback.url.host}:8090/jsp/QueryUI/Redirect.jsp" />
-      </bean>
+      <bean class="org.archive.wayback.proxy.ProxyHttpsResultURIConverter"/>
     </property>
     <property name="parser">
       <bean class="org.archive.wayback.proxy.ProxyRequestParser">
