@@ -9,7 +9,7 @@
   <bean id="proxytransparentreplayrenderer" class="org.archive.wayback.replay.TransparentReplayRenderer">
     <constructor-arg><ref bean="identityhttpheaderprocessor"/></constructor-arg>
   </bean>
-  <bean id="proxymarkupreplayrenderer" class="org.archive.wayback.proxy.ProxyHTMLMarkupReplayRenderer">
+  <bean id="proxymarkupreplayrenderer" class="org.archive.wayback.archivalurl.ServerSideHTMLReplayRenderer">
     <constructor-arg><ref bean="identityhttpheaderprocessor"/></constructor-arg>
     <property name="jspInserts">
       <list>
