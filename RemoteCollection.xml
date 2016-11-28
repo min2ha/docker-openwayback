@@ -55,13 +55,13 @@
   <!-- This ResourceStore just looks in the WARC output folder. -->
   <bean id="localdiskresourcestore" class="org.archive.wayback.resourcestore.SimpleResourceStore">
     <property name="regex" value="^\/Users\/andy\/Documents\/workspace\/pulse\/testing\/(.*)$" />
-    <property name="replace" value="/heritrix/$1"/>
+    <property name="replace" value="/$1"/>
   </bean>
 
   <!-- This ResourceStore looks in the WARC output folder, but looks for open WARC files. -->
   <bean id="localdiskopenwarcsresourcestore" class="org.archive.wayback.resourcestore.SimpleResourceStore">
     <property name="regex" value="^\/Users\/andy\/Documents\/workspace\/pulse\/testing\/(.*)$" />
-    <property name="replace" value="/heritrix/$1.open"/>
+    <property name="replace" value="/$1.open"/>
   </bean>
 
 
