@@ -22,35 +22,37 @@ RUN chmod +x /opt/tomcat/bin/*.sh
 # Cleanup webapps directory
 RUN cd /opt/tomcat/webapps && rm -rf *
 
+# Tweak Tomcat configuration
+COPY server.xml /opt/apache-tomcat-7.0.70/conf/server.xml
+COPY logging.properties /opt/apache-tomcat-7.0.70/conf/logging.properties
+
+# Install ICU4J in the system JVM for broader language support
 RUN \
-  git clone https://github.com/ukwa/openwayback.git && \
-  cd openwayback && \
+  curl -O http://download.icu-project.org/files/icu4j/58.2/icu4j-58_2.jar && \
+  curl -O http://download.icu-project.org/files/icu4j/58.2/icu4j-localespi-58_2.jar && \ 
+  mv icu4j-* /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/
+
+# Build UKWA Wayback versions inside the container
+RUN \
+  git clone https://github.com/ukwa/waybacks.git && \
+  cd waybacks && \
   git checkout master && \
   mvn install -DskipTests
 
-RUN \
-  unzip /openwayback/wayback-webapp/target/openwayback-2.*.war -d /opt/tomcat/webapps/ROOT
-
-COPY server.xml /opt/apache-tomcat-7.0.70/conf/server.xml
-
-COPY logging.properties /opt/apache-tomcat-7.0.70/conf/logging.properties
-COPY logging.properties /opt/apache-tomcat-7.0.70/webapps/ROOT/WEB-INF/classes/logging.properties
-
-COPY wayback.xml /opt/tomcat/webapps/ROOT/WEB-INF/
-
-COPY RemoteCollection.xml /opt/tomcat/webapps/ROOT/WEB-INF/
-
-COPY ProxyReplay.xml /opt/tomcat/webapps/ROOT/WEB-INF/
-
-COPY CDXCollection.xml /opt/tomcat/webapps/ROOT/WEB-INF/
+# Define runtime properties
 
 EXPOSE 8080 8090
 
-ENV JAVA_OPTS -Xmx2g
+ENV JAVA_OPTS -Xmx1g
+
+# Use oukwa|ldukwa|qa for Open UKWA, LD UKWA or QA UKWA versions
+ENV UKWA_OWB_VERSION=qa 
 
 VOLUME /data
 
-#Fire up tomcat
-CMD /opt/tomcat/bin/startup.sh && tail -F /opt/tomcat/logs/catalina.out
+#Fire up tomcat, copying desired WAR into place first
+COPY start.sh /
+
+CMD /start.sh
 
 
