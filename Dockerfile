@@ -1,6 +1,6 @@
 
 FROM java:openjdk-7-jdk
-
+# originally based on UNB Libraries Dockerfile
 MAINTAINER Andrew Jackson "anj@anjackson.net"
 
 # update packages and install maven
@@ -12,9 +12,9 @@ RUN \
   apt-get install -y tar wget curl git maven
 
 # move to /opt and download the tomcat package
-RUN cd /opt && wget -q "http://www.mirrorservice.org/sites/ftp.apache.org/tomcat/tomcat-7/v7.0.73/bin/apache-tomcat-7.0.73.tar.gz" && \
-    cd /opt && tar -zxvf apache-tomcat-7.0.73.tar.gz && \
-    cd /opt && ln -sf apache-tomcat-7.0.73 tomcat
+RUN cd /opt && wget -q "http://www.mirrorservice.org/sites/ftp.apache.org/tomcat/tomcat-7/v7.0.75/bin/apache-tomcat-7.0.75.tar.gz" && \
+    cd /opt && tar -zxvf apache-tomcat-7.0.75.tar.gz && \
+    cd /opt && ln -sf apache-tomcat-7.0.75 tomcat
 
 # make tomcat scripts executable
 RUN chmod +x /opt/tomcat/bin/*.sh
@@ -32,7 +32,15 @@ RUN \
   curl -O http://download.icu-project.org/files/icu4j/58.2/icu4j-localespi-58_2.jar && \ 
   mv icu4j-* /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/
 
-# Build UKWA Wayback versions inside the container
+# Build UKWA Wayback versions inside the container...
+# Need a patched OpenWayback instance:
+RUN \
+  git clone https://github.com/ukwa/openwayback.git && \
+  cd openwayback && \
+  git checkout restore-locale-switch && \
+  mvn install -DskipTests
+  
+# Now build our overlays:
 RUN \
   git clone https://github.com/ukwa/waybacks.git && \
   cd waybacks && \
